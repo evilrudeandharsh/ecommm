@@ -1,4 +1,3 @@
-
 generator client {
     provider = "prisma-client-js"
 }
@@ -9,9 +8,9 @@ datasource db {
 }
 
 model Product {
-    id String @id @default(uuid())
+    id                      String @id @default(uuid())
     name                    String
-    priceInCents            INT
+    priceInCents            Int
     filePath                String
     imagePath               String
     description             String
@@ -19,6 +18,7 @@ model Product {
     createdAt               DateTime        @default(now())
     updatedAt               DateTime        @updatedAt
     orders                  Order[]
+    downloadVerification   DownloadVerification[] 
 }
 model Order{
     id                      String          @id @default(uuid())
@@ -28,8 +28,8 @@ model Order{
 
     userId                String
     productId             String
-    user User             @relation{fields: [userId], references: [id], onDelete: Cascade}
-    product Product       @relation{fields: [productId], references: [id], onDelete: restrict}
+    user                  User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    product               Product          @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
 // Necessary for Next auth
@@ -69,7 +69,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+
     orders        Order[]
  
 }
@@ -87,5 +87,6 @@ model DownloadVerification{
     expiresAt               DateTime
     createdAt               DateTime        @default(now())
     productId               String
-    product Product       @relation{fields: [productId], references: [id], onDelete: Cascade}
+    product Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
+
