@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { formatNumber,formatCurrency } from "@/lib/formatters"
 import { db } from "@/server/db"
 
-export default async function AdminDashboard(){await wait(2000);
+export default async function AdminDashboard(){
     const [ salesData , userData, productData ] =await Promise.all([
         getSalesData(),
         getUserData(),
@@ -42,7 +42,7 @@ async function getSalesData(){
         _sum:{ pricePaidInCents:true },
         _count:true
     }) 
-    await wait (2000)
+   
     return {
         amount:data._sum.pricePaidInCents|| 0/100,
         numberOfSales:data._count
@@ -50,9 +50,7 @@ async function getSalesData(){
 
 }
 
-function wait(duration :number){
-    return new Promise(resolve=> setTimeout(resolve,duration))
-}
+
 async function getUserData(){
     const[userCount,orderData]= await Promise.all([
     db.user.count(),
