@@ -6,12 +6,14 @@ import { useState } from "react"
 import { formatCurrency } from "@/lib/formatters"
 import { Textarea } from "@/components/ui/textarea"
 import { addProduct } from "../../_actions/products"
+import { useFormState, useFormStatus } from "react-dom"
 
 export function ProductForm(){
+    const [error,action]=useFormState(addProduct,{})
     const [priceInCents, setPriceInCents]=useState<number>()
      return (
         <>
-        <form action={addProduct}   className="space-y-8">
+        <form action={action}   className="space-y-8">
             <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 
@@ -47,7 +49,7 @@ export function ProductForm(){
             </div>
 
 
-            <Button type="submit">Save</Button>
+            <SubmitButton/>
             
             
             
@@ -57,4 +59,10 @@ export function ProductForm(){
      )
 
 
+}
+
+function SubmitButton(){
+    const {pending}=useFormStatus()
+
+    return <Button type="submit" disabled ={pending}>{pending ?"Saving": "Save"}</Button>
 }

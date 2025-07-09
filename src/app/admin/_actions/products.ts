@@ -27,7 +27,7 @@ const addSchema=z.object({
 
 })
 
-export async function addProduct(formData: FormData) {
+export async function addProduct(prevState:unknown ,formData: FormData) {
   const result=addSchema.safeParse(Object.fromEntries(formData.entries()))
   if(result.success===false){
     throw new Error("Validation failed");
