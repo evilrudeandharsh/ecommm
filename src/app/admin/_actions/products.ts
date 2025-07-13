@@ -30,7 +30,7 @@ const addSchema=z.object({
 export async function addProduct(prevState:unknown ,formData: FormData) {
   const result=addSchema.safeParse(Object.fromEntries(formData.entries()))
   if(result.success===false){
-    throw new Error("Validation failed");
+   return result.error.formErrors.fieldErrors;
   }
 
   const data=result.data
@@ -48,6 +48,7 @@ export async function addProduct(prevState:unknown ,formData: FormData) {
 
 
   await db.product.create({data:{
+    isAvailableForPurchase:false,
     name:data.name,
     description:data.description,
     priceInCents:data.priceInCents,

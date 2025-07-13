@@ -7,24 +7,36 @@ import { formatCurrency } from "@/lib/formatters"
 import { Textarea } from "@/components/ui/textarea"
 import { addProduct } from "../../_actions/products"
 import { useFormState, useFormStatus } from "react-dom"
-
+import { useActionState } from "react"
 export function ProductForm(){
-    const [error,action]=useFormState(addProduct,{})
-    const [priceInCents, setPriceInCents]=useState<number>()
+    const [error,action]=useActionState(addProduct,{})
+    const [priceInCents, setPriceInCents] = useState<number | null>(null);
      return (
         <>
         <form action={action}   className="space-y-8">
             <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 
-                    <Input type="text" id="name" name="name" required/>
-                
+                <Input type="text" id="name" name="name" required/>
+                {error.name&& <div className="text-destructive">{error.name}</div> }
             </div>
             <div className="space-y-2">
                 <Label htmlFor="priceInCents">Price In Cents</Label>
 
                 
-                    <Input type="number" id="priceInCents" name="priceInCents" required value={priceInCents} onChange={e=> setPriceInCents(Number(e.target.value)|| 0)}/>
+                <Input
+  type="number"
+  id="priceInCents"
+  name="priceInCents"
+  required
+  value={priceInCents === null ? "" : priceInCents}
+  onChange={e => {
+    const val = e.target.value;
+    setPriceInCents(val === "" ? null : Number(val));
+  }}
+/>
+
+                {error.priceInCents&& <div className="text-destructive">{error.priceInCents}</div> }
             <div className="text-muted-foreground">{formatCurrency(( priceInCents || 0) /100 )}</div>
 
 
@@ -33,19 +45,19 @@ export function ProductForm(){
                 <Label htmlFor="description">Description</Label>
                 
                 <Textarea  id="description" name="description" required/>
-                
+                {error.description&& <div className="text-destructive">{error.description}</div> }
             </div>
             <div className="space-y-2">
                 <Label htmlFor="file">File</Label>
                 
-                    <Input type="file" id="file" name="file" required/>
-                
+                <Input type="file" id="file" name="file" required/>
+                {error.file&& <div className="text-destructive">{error.file}</div> }
             </div>
             <div className="space-y-2">
                 <Label htmlFor="image">Image</Label>
                 
-                    <Input type="file" id="image" name="image" required/>
-                
+                <Input type="file" id="image" name="image" required/>
+                {error.image&& <div className="text-destructive">{error.image}</div> }
             </div>
 
 
