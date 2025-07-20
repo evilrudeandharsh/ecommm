@@ -8,7 +8,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { addProduct } from "../../_actions/products"
 import { useFormState, useFormStatus } from "react-dom"
 import { useActionState } from "react"
-export function ProductForm(){
+import type { Product } from "@prisma/client"
+export function ProductForm( {product}: {product? :Product | null}){
     const [error,action]=useActionState(addProduct,{})
     const [priceInCents, setPriceInCents] = useState<number | null>(null);
      return (
