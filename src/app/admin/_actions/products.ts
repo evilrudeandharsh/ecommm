@@ -1,11 +1,14 @@
 "use server"
 
+ import { env } from "@/env"
 import { db } from "@/server/db"
 import { z } from "zod"
 import fs from "fs/promises"
 import { notFound, redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import Stripe from "stripe"
 
+const stripe = new Stripe(env.STRIPE_SECRET_KEY)
 const fileSchema = z.instanceof(File, { message: "Required" })
 const imageSchema = fileSchema.refine(
   file => file.size === 0 || file.type.startsWith("image/")
